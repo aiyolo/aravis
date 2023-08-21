@@ -23,8 +23,8 @@
 #ifndef ARV_INTERFACE_H
 #define ARV_INTERFACE_H
 
-#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
-#error "Only <arv.h> can be included directly."
+#if !defined(ARV_H_INSIDE) && !defined(ARAVIS_COMPILATION)
+#    error "Only <arv.h> can be included directly."
 #endif
 
 #include <arvapi.h>
@@ -33,30 +33,31 @@
 
 G_BEGIN_DECLS
 
-#define ARV_TYPE_INTERFACE             (arv_interface_get_type ())
-ARV_API G_DECLARE_DERIVABLE_TYPE (ArvInterface, arv_interface, ARV, INTERFACE, GObject)
+#define ARV_TYPE_INTERFACE (arv_interface_get_type())
+ARV_API G_DECLARE_DERIVABLE_TYPE(ArvInterface, arv_interface, ARV, INTERFACE, GObject) // 声明为可继承类型，只需要自己定义class结构
 
-struct _ArvInterfaceClass {
-	GObjectClass parent_class;
+// 父类是 GObjectClass
+struct _ArvInterfaceClass
+{
+    GObjectClass parent_class;
 
-	void 		(*update_device_list)		(ArvInterface *iface, GArray *device_ids);
-	ArvDevice *	(*open_device)			(ArvInterface *iface, const char *device_id, GError **error);
+    void (*update_device_list)(ArvInterface *iface, GArray *device_ids);
+    ArvDevice *(*open_device)(ArvInterface *iface, const char *device_id, GError **error);
 
-	const char *	protocol;
+    const char *protocol;
 };
 
-ARV_API void		arv_interface_update_device_list	        (ArvInterface *iface);
-ARV_API unsigned int	arv_interface_get_n_devices		        (ArvInterface *iface);
-ARV_API const char *	arv_interface_get_device_id		        (ArvInterface *iface, unsigned int index);
-ARV_API const char *	arv_interface_get_device_physical_id	        (ArvInterface *iface, unsigned int index);
-ARV_API const char *	arv_interface_get_device_address	        (ArvInterface *iface, unsigned int index);
-ARV_API const char *	arv_interface_get_device_vendor		        (ArvInterface *iface, unsigned int index);
-ARV_API const char *	arv_interface_get_device_manufacturer_info	(ArvInterface *iface, unsigned int index);
-ARV_API const char *	arv_interface_get_device_model		        (ArvInterface *iface, unsigned int index);
-ARV_API const char *	arv_interface_get_device_serial_nbr	        (ArvInterface *iface, unsigned int index);
-ARV_API const char *	arv_interface_get_device_protocol	        (ArvInterface *iface, unsigned int index);
-ARV_API ArvDevice *	arv_interface_open_device		        (ArvInterface *iface, const char *device_id,
-                                                                         GError **error);
+ARV_API void arv_interface_update_device_list(ArvInterface *iface);
+ARV_API unsigned int arv_interface_get_n_devices(ArvInterface *iface);
+ARV_API const char *arv_interface_get_device_id(ArvInterface *iface, unsigned int index);
+ARV_API const char *arv_interface_get_device_physical_id(ArvInterface *iface, unsigned int index);
+ARV_API const char *arv_interface_get_device_address(ArvInterface *iface, unsigned int index);
+ARV_API const char *arv_interface_get_device_vendor(ArvInterface *iface, unsigned int index);
+ARV_API const char *arv_interface_get_device_manufacturer_info(ArvInterface *iface, unsigned int index);
+ARV_API const char *arv_interface_get_device_model(ArvInterface *iface, unsigned int index);
+ARV_API const char *arv_interface_get_device_serial_nbr(ArvInterface *iface, unsigned int index);
+ARV_API const char *arv_interface_get_device_protocol(ArvInterface *iface, unsigned int index);
+ARV_API ArvDevice *arv_interface_open_device(ArvInterface *iface, const char *device_id, GError **error);
 
 G_END_DECLS
 

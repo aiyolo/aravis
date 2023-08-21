@@ -17,39 +17,29 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  *
- * Author: Emmanuel Pacaud <emmanuel.pacaud@free.fr>
+ * Author:
+ * 	Emmanuel Pacaud <emmanuel.pacaud@free.fr>
  */
 
-#ifndef ARV_GV_INTERFACE_H
-#define ARV_GV_INTERFACE_H
+#ifndef ARV_DOM_PARSER_H
+#define ARV_DOM_PARSER_H
 
 #if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
 #error "Only <arv.h> can be included directly."
 #endif
 
 #include <arvapi.h>
-#include <arvtypes.h>
-#include <arvinterface.h>
+#include <arvdomdocument.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
-/**
- * ArvGvInterfaceFlags:
- * @ARV_GV_INTERFACE_FLAGS_ALLOW_BROADCAST_DISCOVERY_ACK: allow gv devices to broadcast the discovery acknowledge packet
- *
- * Since: 0.8.23
- */
+ARV_API void			arv_dom_document_append_from_memory	(ArvDomDocument *document, ArvDomNode *node,
+										 const void *buffer, int size, GError **error);
 
-typedef enum {
-        ARV_GV_INTERFACE_FLAGS_ALLOW_BROADCAST_DISCOVERY_ACK =  1 << 0
-} ArvGvInterfaceFlags;
-
-#define ARV_TYPE_GV_INTERFACE             (arv_gv_interface_get_type ())
-
-// ArvGvInterface 继承 ArvInterface
-ARV_API G_DECLARE_FINAL_TYPE (ArvGvInterface, arv_gv_interface, ARV, GV_INTERFACE, ArvInterface) // 不可继承类型，父类是ArvInterface，需要自己定义类结构和实例结构
-
-ARV_API ArvInterface *		arv_gv_interface_get_instance		(void);
+ARV_API ArvDomDocument *	arv_dom_document_new_from_memory	(const void *buffer, int size, GError **error);
+ARV_API ArvDomDocument *	arv_dom_document_new_from_path		(const char *path, GError **error);
+ARV_API ArvDomDocument *	arv_dom_document_new_from_url		(const char *url, GError **error);
 
 G_END_DECLS
 

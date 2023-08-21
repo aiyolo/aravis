@@ -45,9 +45,7 @@ typedef enum {
 } ArvGvInterfaceFlags;
 
 #define ARV_TYPE_GV_INTERFACE             (arv_gv_interface_get_type ())
-
-// ArvGvInterface 继承 ArvInterface
-ARV_API G_DECLARE_FINAL_TYPE (ArvGvInterface, arv_gv_interface, ARV, GV_INTERFACE, ArvInterface) // 不可继承类型，父类是ArvInterface，需要自己定义类结构和实例结构
+ARV_API G_DECLARE_FINAL_TYPE (ArvGvInterface, arv_gv_interface, ARV, GV_INTERFACE, ArvInterface)
 
 ARV_API ArvInterface *		arv_gv_interface_get_instance		(void);
 

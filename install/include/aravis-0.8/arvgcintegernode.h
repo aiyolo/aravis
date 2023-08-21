@@ -20,8 +20,8 @@
  * Author: Emmanuel Pacaud <emmanuel.pacaud@free.fr>
  */
 
-#ifndef ARV_GV_INTERFACE_H
-#define ARV_GV_INTERFACE_H
+#ifndef ARV_GC_INTEGER_NODE_H
+#define ARV_GC_INTEGER_NODE_H
 
 #if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
 #error "Only <arv.h> can be included directly."
@@ -29,27 +29,15 @@
 
 #include <arvapi.h>
 #include <arvtypes.h>
-#include <arvinterface.h>
+#include <arvgcfeaturenode.h>
+#include <arvgcpropertynode.h>
 
 G_BEGIN_DECLS
 
-/**
- * ArvGvInterfaceFlags:
- * @ARV_GV_INTERFACE_FLAGS_ALLOW_BROADCAST_DISCOVERY_ACK: allow gv devices to broadcast the discovery acknowledge packet
- *
- * Since: 0.8.23
- */
+#define ARV_TYPE_GC_INTEGER_NODE             (arv_gc_integer_node_get_type ())
+ARV_API G_DECLARE_FINAL_TYPE (ArvGcIntegerNode, arv_gc_integer_node, ARV, GC_INTEGER_NODE, ArvGcFeatureNode)
 
-typedef enum {
-        ARV_GV_INTERFACE_FLAGS_ALLOW_BROADCAST_DISCOVERY_ACK =  1 << 0
-} ArvGvInterfaceFlags;
-
-#define ARV_TYPE_GV_INTERFACE             (arv_gv_interface_get_type ())
-
-// ArvGvInterface 继承 ArvInterface
-ARV_API G_DECLARE_FINAL_TYPE (ArvGvInterface, arv_gv_interface, ARV, GV_INTERFACE, ArvInterface) // 不可继承类型，父类是ArvInterface，需要自己定义类结构和实例结构
-
-ARV_API ArvInterface *		arv_gv_interface_get_instance		(void);
+ARV_API ArvGcNode *		arv_gc_integer_node_new			(void);
 
 G_END_DECLS
 

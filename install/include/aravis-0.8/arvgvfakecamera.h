@@ -20,36 +20,28 @@
  * Author: Emmanuel Pacaud <emmanuel.pacaud@free.fr>
  */
 
-#ifndef ARV_GV_INTERFACE_H
-#define ARV_GV_INTERFACE_H
-
 #if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
 #error "Only <arv.h> can be included directly."
 #endif
 
+#ifndef ARV_GV_FAKE_CAMERA_H
+#define ARV_GV_FAKE_CAMERA_H
+
 #include <arvapi.h>
 #include <arvtypes.h>
-#include <arvinterface.h>
 
 G_BEGIN_DECLS
 
-/**
- * ArvGvInterfaceFlags:
- * @ARV_GV_INTERFACE_FLAGS_ALLOW_BROADCAST_DISCOVERY_ACK: allow gv devices to broadcast the discovery acknowledge packet
- *
- * Since: 0.8.23
- */
+#define ARV_GV_FAKE_CAMERA_DEFAULT_SERIAL_NUMBER	"GV01"
+#define ARV_GV_FAKE_CAMERA_DEFAULT_INTERFACE		"127.0.0.1"
 
-typedef enum {
-        ARV_GV_INTERFACE_FLAGS_ALLOW_BROADCAST_DISCOVERY_ACK =  1 << 0
-} ArvGvInterfaceFlags;
+#define ARV_TYPE_GV_FAKE_CAMERA (arv_gv_fake_camera_get_type ())
+ARV_API G_DECLARE_FINAL_TYPE (ArvGvFakeCamera, arv_gv_fake_camera, ARV, GV_FAKE_CAMERA, GObject)
 
-#define ARV_TYPE_GV_INTERFACE             (arv_gv_interface_get_type ())
-
-// ArvGvInterface 继承 ArvInterface
-ARV_API G_DECLARE_FINAL_TYPE (ArvGvInterface, arv_gv_interface, ARV, GV_INTERFACE, ArvInterface) // 不可继承类型，父类是ArvInterface，需要自己定义类结构和实例结构
-
-ARV_API ArvInterface *		arv_gv_interface_get_instance		(void);
+ARV_API ArvGvFakeCamera *		arv_gv_fake_camera_new			(const char *interface_name, const char *serial_number);
+ARV_API ArvGvFakeCamera *		arv_gv_fake_camera_new_full		(const char *interface_name, const char *serial_number, const char *genicam_filename);
+ARV_API gboolean			arv_gv_fake_camera_is_running		(ArvGvFakeCamera *gv_fake_camera);
+ARV_API ArvFakeCamera *			arv_gv_fake_camera_get_fake_camera	(ArvGvFakeCamera *gv_fake_camera);
 
 G_END_DECLS
 

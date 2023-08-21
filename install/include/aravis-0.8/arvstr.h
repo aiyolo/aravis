@@ -20,8 +20,8 @@
  * Author: Emmanuel Pacaud <emmanuel.pacaud@free.fr>
  */
 
-#ifndef ARV_GV_INTERFACE_H
-#define ARV_GV_INTERFACE_H
+#ifndef ARV_STR_H
+#define ARV_STR_H
 
 #if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
 #error "Only <arv.h> can be included directly."
@@ -29,27 +29,53 @@
 
 #include <arvapi.h>
 #include <arvtypes.h>
-#include <arvinterface.h>
 
 G_BEGIN_DECLS
 
-/**
- * ArvGvInterfaceFlags:
- * @ARV_GV_INTERFACE_FLAGS_ALLOW_BROADCAST_DISCOVERY_ACK: allow gv devices to broadcast the discovery acknowledge packet
- *
- * Since: 0.8.23
- */
+ARV_API char *		arv_str_strip			(char *str, const char *illegal_chars, char replacement_char);
 
-typedef enum {
-        ARV_GV_INTERFACE_FLAGS_ALLOW_BROADCAST_DISCOVERY_ACK =  1 << 0
-} ArvGvInterfaceFlags;
+ARV_API gboolean	arv_str_is_uri			(const char *str);
+ARV_API char *		arv_str_to_uri			(const char *str);
 
-#define ARV_TYPE_GV_INTERFACE             (arv_gv_interface_get_type ())
+ARV_API gboolean	arv_str_parse_double		(char **str, double *x);
+ARV_API unsigned int	arv_str_parse_double_list	(char **str, unsigned int n_values, double *values);
 
-// ArvGvInterface 继承 ArvInterface
-ARV_API G_DECLARE_FINAL_TYPE (ArvGvInterface, arv_gv_interface, ARV, GV_INTERFACE, ArvInterface) // 不可继承类型，父类是ArvInterface，需要自己定义类结构和实例结构
+static inline void
+arv_str_skip_spaces (char **str)
+{
+	while (g_ascii_isspace (**str))
+		(*str)++;
+}
 
-ARV_API ArvInterface *		arv_gv_interface_get_instance		(void);
+static inline void
+arv_str_skip_char (char **str, char c)
+{
+	while (**str == c)
+		(*str)++;
+}
+
+static inline void
+arv_str_skip_comma_and_spaces (char **str)
+{
+	while (g_ascii_isspace (**str) || **str == ',')
+		(*str)++;
+}
+
+static inline void
+arv_str_skip_semicolon_and_spaces (char **str)
+{
+	while (g_ascii_isspace (**str) || **str == ';')
+		(*str)++;
+}
+
+static inline void
+arv_str_skip_colon_and_spaces (char **str)
+{
+	while (g_ascii_isspace (**str) || **str == ':')
+		(*str)++;
+}
+
+ARV_API void		arv_g_string_append_hex_dump	(GString *string, const void *data, size_t size);
 
 G_END_DECLS
 

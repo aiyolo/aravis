@@ -1,0 +1,12 @@
+prefix=C:/Users/zhu/Documents/aravis/install
+includedir=${prefix}/include
+libdir=${prefix}/lib
+
+Name: Aravis
+Description: Camera control and image acquisition library
+Version: 0.8.28
+Requires: glib-2.0 >= 2.52, gobject-2.0, gio-2.0
+Requires.private: libxml-2.0, zlib, libusb-1.0
+Libs: -L${libdir} -laravis-0.8
+Libs.private: -lm -lws2_32 -liphlpapi
+Cflags: -I${includedir}/aravis-0.8

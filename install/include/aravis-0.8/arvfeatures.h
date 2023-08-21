@@ -1,6 +1,6 @@
 /* Aravis - Digital camera library
  *
- * Copyright © 2009-2022 Emmanuel Pacaud
+ * Copyright © 2009-2016 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,40 +17,44 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  *
- * Author: Emmanuel Pacaud <emmanuel.pacaud@free.fr>
+ * Author: Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef ARV_GV_INTERFACE_H
-#define ARV_GV_INTERFACE_H
+#ifndef ARV_FEATURES_H
+#define ARV_FEATURES_H
 
 #if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
 #error "Only <arv.h> can be included directly."
 #endif
 
-#include <arvapi.h>
-#include <arvtypes.h>
-#include <arvinterface.h>
-
-G_BEGIN_DECLS
-
 /**
- * ArvGvInterfaceFlags:
- * @ARV_GV_INTERFACE_FLAGS_ALLOW_BROADCAST_DISCOVERY_ACK: allow gv devices to broadcast the discovery acknowledge packet
+ * ARAVIS_HAS_USB
  *
- * Since: 0.8.23
+ * ARAVIS_HAS_USB is defined as 1 if aravis is compiled with USB support, 0 if not.
+ *
+ * Since: 0.6.0
  */
 
-typedef enum {
-        ARV_GV_INTERFACE_FLAGS_ALLOW_BROADCAST_DISCOVERY_ACK =  1 << 0
-} ArvGvInterfaceFlags;
+#define ARAVIS_HAS_USB 1
 
-#define ARV_TYPE_GV_INTERFACE             (arv_gv_interface_get_type ())
+/**
+ * ARAVIS_HAS_PACKET_SOCKET
+ *
+ * ARAVIS_HAS_PACKET_SOCKET is defined as 1 if aravis is compiled with packet socket support, 0 if not.
+ *
+ * Since: 0.6.0
+ */
 
-// ArvGvInterface 继承 ArvInterface
-ARV_API G_DECLARE_FINAL_TYPE (ArvGvInterface, arv_gv_interface, ARV, GV_INTERFACE, ArvInterface) // 不可继承类型，父类是ArvInterface，需要自己定义类结构和实例结构
+#define ARAVIS_HAS_PACKET_SOCKET 0
 
-ARV_API ArvInterface *		arv_gv_interface_get_instance		(void);
+/**
+ * ARAVIS_HAS_FAST_HEARTBEAT
+ *
+ * ARAVIS_HAS_FAST_HEARTBEAT is defined as 1 if aravis is compiled with fast hearbeat option, 0 if not.
+ *
+ * Since: 0.8.0
+ */
 
-G_END_DECLS
+#define ARAVIS_HAS_FAST_HEARTBEAT 0
 
 #endif
