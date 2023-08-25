@@ -25,20 +25,14 @@
 
 G_BEGIN_DECLS
 
-#define ARV_TYPE_VIEWER             (arv_viewer_get_type ())
-#define ARV_IS_VIEWER(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ARV_TYPE_VIEWER))
+#define ARV_TYPE_VIEWER (arv_viewer_get_type())
+#define ARV_IS_VIEWER(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj), ARV_TYPE_VIEWER))
 
-GType 			arv_viewer_get_type 		(void);
+GType arv_viewer_get_type(void);
 
-ArvViewer * 		arv_viewer_new 			(void);
-void			arv_viewer_set_options		(ArvViewer *viewer,
-							 gboolean auto_socket_buffer,
-							 gboolean packet_resend,
-							 guint initial_packet_timeout,
-							 guint packet_timeout,
-							 guint frame_retention,
-							 ArvRegisterCachePolicy register_cache_policy,
-							 ArvRangeCheckPolicy range_check_policy,
-                                                         ArvUvUsbMode usb_mode);
+ArvViewer *arv_viewer_new(void);
+void arv_viewer_set_options(ArvViewer *viewer, gboolean auto_socket_buffer, gboolean packet_resend, guint initial_packet_timeout,
+    guint packet_timeout, guint frame_retention, ArvRegisterCachePolicy register_cache_policy, ArvRangeCheckPolicy range_check_policy,
+    ArvUvUsbMode usb_mode);
 
 G_END_DECLS

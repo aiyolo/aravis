@@ -69,6 +69,7 @@ typedef struct
     GPollFD *poll_fds;
 } ArvGvDiscoverSocketList;
 
+// client 发现设备
 static ArvGvDiscoverSocketList *arv_gv_discover_socket_list_new(void)
 {
     ArvGvDiscoverSocketList *socket_list;
@@ -165,6 +166,7 @@ static void arv_gv_discover_socket_list_free(ArvGvDiscoverSocketList *socket_lis
     g_free(socket_list);
 }
 
+// 设备端
 static void arv_gv_discover_socket_list_send_discover_packet(ArvGvDiscoverSocketList *socket_list, gboolean allow_broadcast_discovery_ack)
 {
     GInetAddress *broadcast_address;

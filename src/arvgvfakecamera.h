@@ -33,10 +33,10 @@
 G_BEGIN_DECLS
 
 #define ARV_GV_FAKE_CAMERA_DEFAULT_SERIAL_NUMBER	"GV01"
-#define ARV_GV_FAKE_CAMERA_DEFAULT_INTERFACE		"127.0.0.1"
+#define ARV_GV_FAKE_CAMERA_DEFAULT_INTERFACE		"127.0.0.1" // 默认网络接口
 
 #define ARV_TYPE_GV_FAKE_CAMERA (arv_gv_fake_camera_get_type ())
-ARV_API G_DECLARE_FINAL_TYPE (ArvGvFakeCamera, arv_gv_fake_camera, ARV, GV_FAKE_CAMERA, GObject)
+ARV_API G_DECLARE_FINAL_TYPE (ArvGvFakeCamera, arv_gv_fake_camera, ARV, GV_FAKE_CAMERA, GObject)  // 不可继承
 
 ARV_API ArvGvFakeCamera *		arv_gv_fake_camera_new			(const char *interface_name, const char *serial_number);
 ARV_API ArvGvFakeCamera *		arv_gv_fake_camera_new_full		(const char *interface_name, const char *serial_number, const char *genicam_filename);

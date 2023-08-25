@@ -214,6 +214,7 @@ typedef struct {
  /* IP + UDP */
 #define ARV_GVSP_PACKET_UDP_OVERHEAD    		        (20 + 8)
  /* IP + UDP + GVSP headers or IP + UDP + GVSP extended headers */
+ // gvsp头包括两部分
 #define ARV_GVSP_PACKET_PROTOCOL_OVERHEAD(ext_ids)	        ((ext_ids) ? \
                                                                  20 + 8 + \
                                                                  sizeof (ArvGvspPacket) + \

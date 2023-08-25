@@ -33,25 +33,22 @@
 
 #include <arvbufferprivate.h>
 
-static gboolean
-arv_buffer_part_is_image (ArvBuffer *buffer, guint part_id)
+static gboolean arv_buffer_part_is_image(ArvBuffer *buffer, guint part_id)
 {
-	return (ARV_IS_BUFFER (buffer) &&
-                buffer->priv->status == ARV_BUFFER_STATUS_SUCCESS &&
-                buffer->priv->n_parts > 0 &&
-                part_id < buffer->priv->n_parts &&
-                (buffer->priv->payload_type == ARV_BUFFER_PAYLOAD_TYPE_IMAGE ||
-                 buffer->priv->payload_type == ARV_BUFFER_PAYLOAD_TYPE_EXTENDED_CHUNK_DATA ||
-                 buffer->priv->payload_type == ARV_BUFFER_PAYLOAD_TYPE_MULTIPART) &&
-                (buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_2D_IMAGE ||
-                 buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_2D_PLANE_BIPLANAR ||
-                 buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_2D_PLANE_TRIPLANAR ||
-                 buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_2D_PLANE_QUADPLANAR ||
-                 buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_3D_IMAGE ||
-                 buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_3D_PLANE_BIPLANAR ||
-                 buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_3D_PLANE_TRIPLANAR ||
-                 buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_3D_PLANE_QUADPLANAR ||
-                 buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_CONFIDENCE_MAP));
+    return (ARV_IS_BUFFER(buffer) && buffer->priv->status == ARV_BUFFER_STATUS_SUCCESS && buffer->priv->n_parts > 0 &&
+            part_id < buffer->priv->n_parts &&
+            (buffer->priv->payload_type == ARV_BUFFER_PAYLOAD_TYPE_IMAGE ||
+                buffer->priv->payload_type == ARV_BUFFER_PAYLOAD_TYPE_EXTENDED_CHUNK_DATA ||
+                buffer->priv->payload_type == ARV_BUFFER_PAYLOAD_TYPE_MULTIPART) &&
+            (buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_2D_IMAGE ||
+                buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_2D_PLANE_BIPLANAR ||
+                buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_2D_PLANE_TRIPLANAR ||
+                buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_2D_PLANE_QUADPLANAR ||
+                buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_3D_IMAGE ||
+                buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_3D_PLANE_BIPLANAR ||
+                buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_3D_PLANE_TRIPLANAR ||
+                buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_3D_PLANE_QUADPLANAR ||
+                buffer->priv->parts[part_id].data_type == ARV_BUFFER_PART_DATA_TYPE_CONFIDENCE_MAP));
 }
 
 /**
@@ -74,29 +71,31 @@ arv_buffer_part_is_image (ArvBuffer *buffer, guint part_id)
  * Since: 0.2.0
  */
 
-ArvBuffer *
-arv_buffer_new_full (size_t size, void *preallocated, void *user_data, GDestroyNotify user_data_destroy_func)
+ArvBuffer *arv_buffer_new_full(size_t size, void *preallocated, void *user_data, GDestroyNotify user_data_destroy_func)
 {
-	ArvBuffer *buffer;
+    ArvBuffer *buffer;
 
-	buffer = g_object_new (ARV_TYPE_BUFFER, NULL);
-	buffer->priv->allocated_size = size;
-	buffer->priv->user_data = user_data;
-	buffer->priv->user_data_destroy_func = user_data_destroy_func;
-	buffer->priv->chunk_endianness = G_BIG_ENDIAN;
-	buffer->priv->payload_type = ARV_BUFFER_PAYLOAD_TYPE_UNKNOWN;
-        buffer->priv->parts = g_new0 (ArvBufferPartInfos, 1);
-        buffer->priv->n_parts = 1;
+    buffer = g_object_new(ARV_TYPE_BUFFER, NULL);
+    buffer->priv->allocated_size = size;
+    buffer->priv->user_data = user_data;
+    buffer->priv->user_data_destroy_func = user_data_destroy_func;
+    buffer->priv->chunk_endianness = G_BIG_ENDIAN;
+    buffer->priv->payload_type = ARV_BUFFER_PAYLOAD_TYPE_UNKNOWN;
+    buffer->priv->parts = g_new0(ArvBufferPartInfos, 1);
+    buffer->priv->n_parts = 1;
 
-	if (preallocated != NULL) {
-		buffer->priv->is_preallocated = TRUE;
-		buffer->priv->data = preallocated;
-	} else {
-		buffer->priv->is_preallocated = FALSE;
-		buffer->priv->data = g_malloc (size);
-	}
+    if (preallocated != NULL)
+    {
+        buffer->priv->is_preallocated = TRUE;
+        buffer->priv->data = preallocated;
+    }
+    else
+    {
+        buffer->priv->is_preallocated = FALSE;
+        buffer->priv->data = g_malloc(size);
+    }
 
-	return buffer;
+    return buffer;
 }
 
 /**
@@ -114,10 +113,9 @@ arv_buffer_new_full (size_t size, void *preallocated, void *user_data, GDestroyN
  * Since: 0.2.0
  */
 
-ArvBuffer *
-arv_buffer_new (size_t size, void *preallocated)
+ArvBuffer *arv_buffer_new(size_t size, void *preallocated)
 {
-	return arv_buffer_new_full (size, preallocated, NULL, NULL);
+    return arv_buffer_new_full(size, preallocated, NULL, NULL);
 }
 
 /**
@@ -133,10 +131,9 @@ arv_buffer_new (size_t size, void *preallocated)
  * Since: 0.2.3
  */
 
-ArvBuffer *
-arv_buffer_new_allocate (size_t size)
+ArvBuffer *arv_buffer_new_allocate(size_t size)
 {
-	return arv_buffer_new_full (size, NULL, NULL, NULL);
+    return arv_buffer_new_full(size, NULL, NULL, NULL);
 }
 
 /**
@@ -151,20 +148,20 @@ arv_buffer_new_allocate (size_t size)
  * Since: 0.4.0
  **/
 
-const void *
-arv_buffer_get_data (ArvBuffer *buffer, size_t *size)
+const void *arv_buffer_get_data(ArvBuffer *buffer, size_t *size)
 {
-	g_return_val_if_fail (ARV_IS_BUFFER (buffer), NULL);
+    g_return_val_if_fail(ARV_IS_BUFFER(buffer), NULL);
 
-	if (size != NULL)
-		*size = buffer->priv->received_size;
+    if (size != NULL)
+        *size = buffer->priv->received_size;
 
-	return buffer->priv->data;
+    return buffer->priv->data;
 }
 
-typedef struct ARAVIS_PACKED_STRUCTURE {
-	guint32 id;
-	guint32 size;
+typedef struct ARAVIS_PACKED_STRUCTURE
+{
+    guint32 id;
+    guint32 size;
 } ArvChunkInfos;
 
 /**
@@ -176,12 +173,9 @@ typedef struct ARAVIS_PACKED_STRUCTURE {
  * Since: 0.8.0
  */
 
-gboolean
-arv_buffer_has_chunks (ArvBuffer *buffer)
+gboolean arv_buffer_has_chunks(ArvBuffer *buffer)
 {
-	return ARV_IS_BUFFER (buffer) &&
-		buffer->priv->status == ARV_BUFFER_STATUS_SUCCESS &&
-                buffer->priv->has_chunks;
+    return ARV_IS_BUFFER(buffer) && buffer->priv->status == ARV_BUFFER_STATUS_SUCCESS && buffer->priv->has_chunks;
 }
 
 /**
@@ -197,53 +191,59 @@ arv_buffer_has_chunks (ArvBuffer *buffer)
  * Since: 0.4.0
  **/
 
-const void *
-arv_buffer_get_chunk_data (ArvBuffer *buffer, guint64 chunk_id, size_t *size)
+const void *arv_buffer_get_chunk_data(ArvBuffer *buffer, guint64 chunk_id, size_t *size)
 {
-	ArvChunkInfos *infos;
-	unsigned char *data;
-	ptrdiff_t offset;
+    ArvChunkInfos *infos;
+    unsigned char *data;
+    ptrdiff_t offset;
 
-	if (size != NULL)
-		*size = 0;
+    if (size != NULL)
+        *size = 0;
 
-	g_return_val_if_fail (arv_buffer_has_chunks (buffer), NULL);
-	g_return_val_if_fail (buffer->priv->data != NULL, NULL);
+    g_return_val_if_fail(arv_buffer_has_chunks(buffer), NULL);
+    g_return_val_if_fail(buffer->priv->data != NULL, NULL);
 
-	data = buffer->priv->data;
-	offset = buffer->priv->received_size - sizeof (ArvChunkInfos);
-	while (offset > 0) {
-		guint32 id;
-		guint32 chunk_size;
+    data = buffer->priv->data;
+    offset = buffer->priv->received_size - sizeof(ArvChunkInfos);
+    while (offset > 0)
+    {
+        guint32 id;
+        guint32 chunk_size;
 
-		infos = (ArvChunkInfos *) &data[offset];
+        infos = (ArvChunkInfos *)&data[offset];
 
-		if (buffer->priv->chunk_endianness == G_BIG_ENDIAN) {
-			id = GUINT32_FROM_BE (infos->id);
-			chunk_size = GUINT32_FROM_BE (infos->size);
-		} else {
-			id = GUINT32_FROM_LE (infos->id);
-			chunk_size = GUINT32_FROM_LE (infos->size);
-		}
+        if (buffer->priv->chunk_endianness == G_BIG_ENDIAN)
+        {
+            id = GUINT32_FROM_BE(infos->id);
+            chunk_size = GUINT32_FROM_BE(infos->size);
+        }
+        else
+        {
+            id = GUINT32_FROM_LE(infos->id);
+            chunk_size = GUINT32_FROM_LE(infos->size);
+        }
 
-		if (id == chunk_id) {
-			ptrdiff_t data_offset;
+        if (id == chunk_id)
+        {
+            ptrdiff_t data_offset;
 
-			data_offset = offset - chunk_size;
-			if (data_offset >= 0) {
-				if (size != NULL)
-					*size = chunk_size;
-				return &data[data_offset];
-			} else
-		       		return NULL;
-		}
-		if (chunk_size > 0)
-			offset = offset - chunk_size - sizeof (ArvChunkInfos);
-		else
-			offset = 0;
-	};
+            data_offset = offset - chunk_size;
+            if (data_offset >= 0)
+            {
+                if (size != NULL)
+                    *size = chunk_size;
+                return &data[data_offset];
+            }
+            else
+                return NULL;
+        }
+        if (chunk_size > 0)
+            offset = offset - chunk_size - sizeof(ArvChunkInfos);
+        else
+            offset = 0;
+    };
 
-	return NULL;
+    return NULL;
 }
 
 /**
@@ -257,12 +257,11 @@ arv_buffer_get_chunk_data (ArvBuffer *buffer, guint64 chunk_id, size_t *size)
  * Since: 0.4.0
  */
 
-const void *
-arv_buffer_get_user_data (ArvBuffer *buffer)
+const void *arv_buffer_get_user_data(ArvBuffer *buffer)
 {
-	g_return_val_if_fail (ARV_IS_BUFFER (buffer), NULL);
+    g_return_val_if_fail(ARV_IS_BUFFER(buffer), NULL);
 
-	return buffer->priv->user_data;
+    return buffer->priv->user_data;
 }
 
 /**
@@ -276,12 +275,11 @@ arv_buffer_get_user_data (ArvBuffer *buffer)
  * Since: 0.4.0
  */
 
-ArvBufferStatus
-arv_buffer_get_status (ArvBuffer *buffer)
+ArvBufferStatus arv_buffer_get_status(ArvBuffer *buffer)
 {
-	g_return_val_if_fail (ARV_IS_BUFFER (buffer), ARV_BUFFER_STATUS_UNKNOWN);
+    g_return_val_if_fail(ARV_IS_BUFFER(buffer), ARV_BUFFER_STATUS_UNKNOWN);
 
-	return buffer->priv->status;
+    return buffer->priv->status;
 }
 
 /**
@@ -295,12 +293,11 @@ arv_buffer_get_status (ArvBuffer *buffer)
  * Since: 0.4.0
  */
 
-ArvBufferPayloadType
-arv_buffer_get_payload_type (ArvBuffer *buffer)
+ArvBufferPayloadType arv_buffer_get_payload_type(ArvBuffer *buffer)
 {
-	g_return_val_if_fail (ARV_IS_BUFFER (buffer), -1);
+    g_return_val_if_fail(ARV_IS_BUFFER(buffer), -1);
 
-	return buffer->priv->payload_type;
+    return buffer->priv->payload_type;
 }
 
 /**
@@ -317,12 +314,11 @@ arv_buffer_get_payload_type (ArvBuffer *buffer)
  * Since: 0.4.0
  */
 
-guint64
-arv_buffer_get_timestamp (ArvBuffer *buffer)
+guint64 arv_buffer_get_timestamp(ArvBuffer *buffer)
 {
-	g_return_val_if_fail (ARV_IS_BUFFER (buffer), 0);
+    g_return_val_if_fail(ARV_IS_BUFFER(buffer), 0);
 
-	return buffer->priv->timestamp_ns;
+    return buffer->priv->timestamp_ns;
 }
 
 /**
@@ -336,12 +332,11 @@ arv_buffer_get_timestamp (ArvBuffer *buffer)
  * Since: 0.4.0
  */
 
-void
-arv_buffer_set_timestamp (ArvBuffer *buffer, guint64 timestamp_ns)
+void arv_buffer_set_timestamp(ArvBuffer *buffer, guint64 timestamp_ns)
 {
-	g_return_if_fail (ARV_IS_BUFFER (buffer));
+    g_return_if_fail(ARV_IS_BUFFER(buffer));
 
-	buffer->priv->timestamp_ns = timestamp_ns;
+    buffer->priv->timestamp_ns = timestamp_ns;
 }
 
 /**
@@ -356,12 +351,11 @@ arv_buffer_set_timestamp (ArvBuffer *buffer, guint64 timestamp_ns)
  * Since: 0.6.0
  */
 
-guint64
-arv_buffer_get_system_timestamp (ArvBuffer *buffer)
+guint64 arv_buffer_get_system_timestamp(ArvBuffer *buffer)
 {
-	g_return_val_if_fail (ARV_IS_BUFFER (buffer), 0);
+    g_return_val_if_fail(ARV_IS_BUFFER(buffer), 0);
 
-	return buffer->priv->system_timestamp_ns;
+    return buffer->priv->system_timestamp_ns;
 }
 
 /**
@@ -375,14 +369,12 @@ arv_buffer_get_system_timestamp (ArvBuffer *buffer)
  * Since: 0.6.0
  */
 
-void
-arv_buffer_set_system_timestamp (ArvBuffer *buffer, guint64 timestamp_ns)
+void arv_buffer_set_system_timestamp(ArvBuffer *buffer, guint64 timestamp_ns)
 {
-	g_return_if_fail (ARV_IS_BUFFER (buffer));
+    g_return_if_fail(ARV_IS_BUFFER(buffer));
 
-	buffer->priv->system_timestamp_ns = timestamp_ns;
+    buffer->priv->system_timestamp_ns = timestamp_ns;
 }
-
 
 /**
  * arv_buffer_get_frame_id:
@@ -395,12 +387,11 @@ arv_buffer_set_system_timestamp (ArvBuffer *buffer, guint64 timestamp_ns)
  * Since: 0.8.0
  */
 
-guint64
-arv_buffer_get_frame_id (ArvBuffer *buffer)
+guint64 arv_buffer_get_frame_id(ArvBuffer *buffer)
 {
-	g_return_val_if_fail (ARV_IS_BUFFER (buffer), 0);
+    g_return_val_if_fail(ARV_IS_BUFFER(buffer), 0);
 
-	return buffer->priv->frame_id;
+    return buffer->priv->frame_id;
 }
 
 /**
@@ -413,12 +404,11 @@ arv_buffer_get_frame_id (ArvBuffer *buffer)
  * Since: 0.8.3
  */
 
-void
-arv_buffer_set_frame_id (ArvBuffer *buffer, guint64 frame_id)
+void arv_buffer_set_frame_id(ArvBuffer *buffer, guint64 frame_id)
 {
-	g_return_if_fail (ARV_IS_BUFFER (buffer));
+    g_return_if_fail(ARV_IS_BUFFER(buffer));
 
-	buffer->priv->frame_id = frame_id;
+    buffer->priv->frame_id = frame_id;
 }
 
 /**
@@ -430,12 +420,11 @@ arv_buffer_set_frame_id (ArvBuffer *buffer, guint64 frame_id)
  * Since: 0.8.23
  */
 
-guint
-arv_buffer_get_n_parts (ArvBuffer *buffer)
+guint arv_buffer_get_n_parts(ArvBuffer *buffer)
 {
-	g_return_val_if_fail (ARV_IS_BUFFER (buffer), 0);
+    g_return_val_if_fail(ARV_IS_BUFFER(buffer), 0);
 
-        return buffer->priv->n_parts;
+    return buffer->priv->n_parts;
 }
 
 /**
@@ -450,18 +439,17 @@ arv_buffer_get_n_parts (ArvBuffer *buffer)
  * Since: 0.8.25
  */
 
-gint
-arv_buffer_find_component (ArvBuffer *buffer, guint component_id)
+gint arv_buffer_find_component(ArvBuffer *buffer, guint component_id)
 {
-        guint i;
+    guint i;
 
-	g_return_val_if_fail (ARV_IS_BUFFER (buffer), -1);
+    g_return_val_if_fail(ARV_IS_BUFFER(buffer), -1);
 
-        for (i = 0; i < buffer->priv->n_parts; i++)
-                if (buffer->priv->parts[i].component_id == component_id)
-                        return i;
+    for (i = 0; i < buffer->priv->n_parts; i++)
+        if (buffer->priv->parts[i].component_id == component_id)
+            return i;
 
-        return -1;
+    return -1;
 }
 
 /**
@@ -475,16 +463,15 @@ arv_buffer_find_component (ArvBuffer *buffer, guint component_id)
  * Since: 0.8.23
  */
 
-const void *
-arv_buffer_get_part_data (ArvBuffer *buffer, guint part_id, size_t *size)
+const void *arv_buffer_get_part_data(ArvBuffer *buffer, guint part_id, size_t *size)
 {
-	g_return_val_if_fail (ARV_IS_BUFFER (buffer), NULL);
-        g_return_val_if_fail (part_id < buffer->priv->n_parts, NULL);
+    g_return_val_if_fail(ARV_IS_BUFFER(buffer), NULL);
+    g_return_val_if_fail(part_id < buffer->priv->n_parts, NULL);
 
-        if (size != NULL)
-                *size = buffer->priv->parts[part_id].size;
+    if (size != NULL)
+        *size = buffer->priv->parts[part_id].size;
 
-        return buffer->priv->data + buffer->priv->parts[part_id].data_offset;
+    return buffer->priv->data + buffer->priv->parts[part_id].data_offset;
 }
 
 /**
@@ -497,13 +484,12 @@ arv_buffer_get_part_data (ArvBuffer *buffer, guint part_id, size_t *size)
  * Since: 0.8.25
  */
 
-guint
-arv_buffer_get_part_component_id (ArvBuffer *buffer, guint part_id)
+guint arv_buffer_get_part_component_id(ArvBuffer *buffer, guint part_id)
 {
-	g_return_val_if_fail (ARV_IS_BUFFER (buffer), 0);
-        g_return_val_if_fail (part_id < buffer->priv->n_parts, 0);
+    g_return_val_if_fail(ARV_IS_BUFFER(buffer), 0);
+    g_return_val_if_fail(part_id < buffer->priv->n_parts, 0);
 
-        return buffer->priv->parts[part_id].component_id;
+    return buffer->priv->parts[part_id].component_id;
 }
 
 /**
@@ -516,13 +502,12 @@ arv_buffer_get_part_component_id (ArvBuffer *buffer, guint part_id)
  * Since: 0.8.23
  */
 
-ArvBufferPartDataType
-arv_buffer_get_part_data_type (ArvBuffer *buffer, guint part_id)
+ArvBufferPartDataType arv_buffer_get_part_data_type(ArvBuffer *buffer, guint part_id)
 {
-	g_return_val_if_fail (ARV_IS_BUFFER (buffer), ARV_BUFFER_PART_DATA_TYPE_UNKNOWN);
-        g_return_val_if_fail (part_id < buffer->priv->n_parts, ARV_BUFFER_PART_DATA_TYPE_UNKNOWN);
+    g_return_val_if_fail(ARV_IS_BUFFER(buffer), ARV_BUFFER_PART_DATA_TYPE_UNKNOWN);
+    g_return_val_if_fail(part_id < buffer->priv->n_parts, ARV_BUFFER_PART_DATA_TYPE_UNKNOWN);
 
-        return buffer->priv->parts[part_id].data_type;
+    return buffer->priv->parts[part_id].data_type;
 }
 
 /**
@@ -540,12 +525,11 @@ arv_buffer_get_part_data_type (ArvBuffer *buffer, guint part_id)
  * Since: 0.8.23
  */
 
-ArvPixelFormat
-arv_buffer_get_part_pixel_format (ArvBuffer *buffer, guint part_id)
+ArvPixelFormat arv_buffer_get_part_pixel_format(ArvBuffer *buffer, guint part_id)
 {
-	g_return_val_if_fail (arv_buffer_part_is_image (buffer, part_id), 0);
+    g_return_val_if_fail(arv_buffer_part_is_image(buffer, part_id), 0);
 
-	return buffer->priv->parts[part_id].pixel_format;
+    return buffer->priv->parts[part_id].pixel_format;
 }
 
 /**
@@ -565,19 +549,18 @@ arv_buffer_get_part_pixel_format (ArvBuffer *buffer, guint part_id)
  * Since: 0.8.23
  */
 
-void
-arv_buffer_get_part_region (ArvBuffer *buffer, guint part_id, gint *x, gint *y, gint *width, gint *height)
+void arv_buffer_get_part_region(ArvBuffer *buffer, guint part_id, gint *x, gint *y, gint *width, gint *height)
 {
-	g_return_if_fail (arv_buffer_part_is_image (buffer, part_id));
+    g_return_if_fail(arv_buffer_part_is_image(buffer, part_id));
 
-	if (x != NULL)
-		*x = buffer->priv->parts[part_id].x_offset;
-	if (y != NULL)
-		*y = buffer->priv->parts[part_id].y_offset;
-	if (width != NULL)
-		*width = buffer->priv->parts[part_id].width;
-	if (height != NULL)
-		*height = buffer->priv->parts[part_id].height;
+    if (x != NULL)
+        *x = buffer->priv->parts[part_id].x_offset;
+    if (y != NULL)
+        *y = buffer->priv->parts[part_id].y_offset;
+    if (width != NULL)
+        *width = buffer->priv->parts[part_id].width;
+    if (height != NULL)
+        *height = buffer->priv->parts[part_id].height;
 }
 
 /**
@@ -595,15 +578,14 @@ arv_buffer_get_part_region (ArvBuffer *buffer, guint part_id, gint *x, gint *y, 
  * Since: 0.8.23
  */
 
-void
-arv_buffer_get_part_padding (ArvBuffer *buffer, guint part_id, gint *x_padding, gint *y_padding)
+void arv_buffer_get_part_padding(ArvBuffer *buffer, guint part_id, gint *x_padding, gint *y_padding)
 {
-	g_return_if_fail (arv_buffer_part_is_image (buffer, part_id));
+    g_return_if_fail(arv_buffer_part_is_image(buffer, part_id));
 
-	if (x_padding != NULL)
-		*x_padding = buffer->priv->parts[part_id].x_padding;
-	if (y_padding != NULL)
-		*y_padding = buffer->priv->parts[part_id].y_padding;
+    if (x_padding != NULL)
+        *x_padding = buffer->priv->parts[part_id].x_padding;
+    if (y_padding != NULL)
+        *y_padding = buffer->priv->parts[part_id].y_padding;
 }
 
 /**
@@ -621,12 +603,11 @@ arv_buffer_get_part_padding (ArvBuffer *buffer, guint part_id, gint *x_padding, 
  * Since: 0.8.23
  */
 
-gint
-arv_buffer_get_part_width (ArvBuffer *buffer, guint part_id)
+gint arv_buffer_get_part_width(ArvBuffer *buffer, guint part_id)
 {
-	g_return_val_if_fail (arv_buffer_part_is_image (buffer, part_id), 0);
+    g_return_val_if_fail(arv_buffer_part_is_image(buffer, part_id), 0);
 
-	return buffer->priv->parts[part_id].width;
+    return buffer->priv->parts[part_id].width;
 }
 
 /**
@@ -644,12 +625,11 @@ arv_buffer_get_part_width (ArvBuffer *buffer, guint part_id)
  * Since: 0.8.23
  */
 
-gint
-arv_buffer_get_part_height (ArvBuffer *buffer, guint part_id)
+gint arv_buffer_get_part_height(ArvBuffer *buffer, guint part_id)
 {
-	g_return_val_if_fail (arv_buffer_part_is_image (buffer, part_id), 0);
+    g_return_val_if_fail(arv_buffer_part_is_image(buffer, part_id), 0);
 
-	return buffer->priv->parts[part_id].height;
+    return buffer->priv->parts[part_id].height;
 }
 
 /**
@@ -667,12 +647,11 @@ arv_buffer_get_part_height (ArvBuffer *buffer, guint part_id)
  * Since: 0.8.23
  */
 
-gint
-arv_buffer_get_part_x (ArvBuffer *buffer, guint part_id)
+gint arv_buffer_get_part_x(ArvBuffer *buffer, guint part_id)
 {
-	g_return_val_if_fail (arv_buffer_part_is_image (buffer, part_id), 0);
+    g_return_val_if_fail(arv_buffer_part_is_image(buffer, part_id), 0);
 
-	return buffer->priv->parts[part_id].x_offset;
+    return buffer->priv->parts[part_id].x_offset;
 }
 
 /**
@@ -690,12 +669,11 @@ arv_buffer_get_part_x (ArvBuffer *buffer, guint part_id)
  * Since: 0.8.23
  */
 
-gint
-arv_buffer_get_part_y (ArvBuffer *buffer, guint part_id)
+gint arv_buffer_get_part_y(ArvBuffer *buffer, guint part_id)
 {
-	g_return_val_if_fail (arv_buffer_part_is_image (buffer, part_id), 0);
+    g_return_val_if_fail(arv_buffer_part_is_image(buffer, part_id), 0);
 
-	return buffer->priv->parts[part_id].y_offset;
+    return buffer->priv->parts[part_id].y_offset;
 }
 
 /**
@@ -708,10 +686,9 @@ arv_buffer_get_part_y (ArvBuffer *buffer, guint part_id)
  * Since: 0.8.25
  */
 
-const void *
-arv_buffer_get_image_data (ArvBuffer *buffer, size_t *size)
+const void *arv_buffer_get_image_data(ArvBuffer *buffer, size_t *size)
 {
-        return arv_buffer_get_part_data (buffer, 0, size);
+    return arv_buffer_get_part_data(buffer, 0, size);
 }
 
 /**
@@ -728,10 +705,9 @@ arv_buffer_get_image_data (ArvBuffer *buffer, size_t *size)
  * Since: 0.4.0
  */
 
-ArvPixelFormat
-arv_buffer_get_image_pixel_format (ArvBuffer *buffer)
+ArvPixelFormat arv_buffer_get_image_pixel_format(ArvBuffer *buffer)
 {
-        return arv_buffer_get_part_pixel_format (buffer, 0);
+    return arv_buffer_get_part_pixel_format(buffer, 0);
 }
 
 /**
@@ -750,10 +726,9 @@ arv_buffer_get_image_pixel_format (ArvBuffer *buffer)
  * Since: 0.4.0
  */
 
-void
-arv_buffer_get_image_region (ArvBuffer *buffer, gint *x, gint *y, gint *width, gint *height)
+void arv_buffer_get_image_region(ArvBuffer *buffer, gint *x, gint *y, gint *width, gint *height)
 {
-        arv_buffer_get_part_region (buffer, 0, x, y, width, height);
+    arv_buffer_get_part_region(buffer, 0, x, y, width, height);
 }
 
 /**
@@ -770,10 +745,9 @@ arv_buffer_get_image_region (ArvBuffer *buffer, gint *x, gint *y, gint *width, g
  * Since: 0.8.23
  */
 
-void
-arv_buffer_get_image_padding (ArvBuffer *buffer, gint *x_padding, gint *y_padding)
+void arv_buffer_get_image_padding(ArvBuffer *buffer, gint *x_padding, gint *y_padding)
 {
-        return arv_buffer_get_part_padding (buffer, 0, x_padding, y_padding);
+    return arv_buffer_get_part_padding(buffer, 0, x_padding, y_padding);
 }
 
 /**
@@ -790,10 +764,9 @@ arv_buffer_get_image_padding (ArvBuffer *buffer, gint *x_padding, gint *y_paddin
  * Since: 0.4.0
  */
 
-gint
-arv_buffer_get_image_width (ArvBuffer *buffer)
+gint arv_buffer_get_image_width(ArvBuffer *buffer)
 {
-        return arv_buffer_get_part_width (buffer, 0);
+    return arv_buffer_get_part_width(buffer, 0);
 }
 
 /**
@@ -810,10 +783,9 @@ arv_buffer_get_image_width (ArvBuffer *buffer)
  * Since: 0.4.0
  */
 
-gint
-arv_buffer_get_image_height (ArvBuffer *buffer)
+gint arv_buffer_get_image_height(ArvBuffer *buffer)
 {
-        return arv_buffer_get_part_height (buffer, 0);
+    return arv_buffer_get_part_height(buffer, 0);
 }
 
 /**
@@ -830,10 +802,9 @@ arv_buffer_get_image_height (ArvBuffer *buffer)
  * Since: 0.4.0
  */
 
-gint
-arv_buffer_get_image_x (ArvBuffer *buffer)
+gint arv_buffer_get_image_x(ArvBuffer *buffer)
 {
-        return arv_buffer_get_part_x (buffer, 0);
+    return arv_buffer_get_part_x(buffer, 0);
 }
 
 /**
@@ -850,64 +821,61 @@ arv_buffer_get_image_x (ArvBuffer *buffer)
  * Since: 0.4.0
  */
 
-gint
-arv_buffer_get_image_y (ArvBuffer *buffer)
+gint arv_buffer_get_image_y(ArvBuffer *buffer)
 {
-        return arv_buffer_get_part_y (buffer, 0);
+    return arv_buffer_get_part_y(buffer, 0);
 }
 
-void
-arv_buffer_set_n_parts (ArvBuffer* buffer, guint n_parts)
+void arv_buffer_set_n_parts(ArvBuffer *buffer, guint n_parts)
 {
-        g_return_if_fail (ARV_IS_BUFFER(buffer));
+    g_return_if_fail(ARV_IS_BUFFER(buffer));
 
-        if (G_UNLIKELY (n_parts == 0)) {
-                buffer->priv->n_parts = 0;
-                g_clear_pointer (&buffer->priv->parts, g_free);
-
-                return;
-        }
-
-        if (buffer->priv->n_parts != n_parts)
-                buffer->priv->parts = g_realloc_n (buffer->priv->parts, n_parts, sizeof (ArvBufferPartInfos));
-
-        memset (buffer->priv->parts, 0, n_parts * sizeof (ArvBufferPartInfos));
-        buffer->priv->n_parts = n_parts;
-}
-
-G_DEFINE_TYPE_WITH_CODE (ArvBuffer, arv_buffer, G_TYPE_OBJECT, G_ADD_PRIVATE (ArvBuffer))
-
-static void
-arv_buffer_init (ArvBuffer *buffer)
-{
-	buffer->priv = arv_buffer_get_instance_private (buffer);
-	buffer->priv->status = ARV_BUFFER_STATUS_CLEARED;
-}
-
-static void
-arv_buffer_finalize (GObject *object)
-{
-	ArvBuffer *buffer = ARV_BUFFER (object);
-
+    if (G_UNLIKELY(n_parts == 0))
+    {
         buffer->priv->n_parts = 0;
-        g_clear_pointer (&buffer->priv->parts, g_free);
+        g_clear_pointer(&buffer->priv->parts, g_free);
 
-	if (!buffer->priv->is_preallocated) {
-		g_free (buffer->priv->data);
-		buffer->priv->data = NULL;
-		buffer->priv->allocated_size = 0;
-	}
+        return;
+    }
 
-	if (buffer->priv->user_data && buffer->priv->user_data_destroy_func)
-		buffer->priv->user_data_destroy_func (buffer->priv->user_data);
+    if (buffer->priv->n_parts != n_parts)
+        buffer->priv->parts = g_realloc_n(buffer->priv->parts, n_parts, sizeof(ArvBufferPartInfos));
 
-	G_OBJECT_CLASS (arv_buffer_parent_class)->finalize (object);
+    memset(buffer->priv->parts, 0, n_parts * sizeof(ArvBufferPartInfos));
+    buffer->priv->n_parts = n_parts;
 }
 
-static void
-arv_buffer_class_init (ArvBufferClass *this_class)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (this_class);
+G_DEFINE_TYPE_WITH_CODE(ArvBuffer, arv_buffer, G_TYPE_OBJECT, G_ADD_PRIVATE(ArvBuffer))
 
-	object_class->finalize = arv_buffer_finalize;
+static void arv_buffer_init(ArvBuffer *buffer)
+{
+    buffer->priv = arv_buffer_get_instance_private(buffer);
+    buffer->priv->status = ARV_BUFFER_STATUS_CLEARED;
+}
+
+static void arv_buffer_finalize(GObject *object)
+{
+    ArvBuffer *buffer = ARV_BUFFER(object);
+
+    buffer->priv->n_parts = 0;
+    g_clear_pointer(&buffer->priv->parts, g_free);
+
+    if (!buffer->priv->is_preallocated)
+    {
+        g_free(buffer->priv->data);
+        buffer->priv->data = NULL;
+        buffer->priv->allocated_size = 0;
+    }
+
+    if (buffer->priv->user_data && buffer->priv->user_data_destroy_func)
+        buffer->priv->user_data_destroy_func(buffer->priv->user_data);
+
+    G_OBJECT_CLASS(arv_buffer_parent_class)->finalize(object);
+}
+
+static void arv_buffer_class_init(ArvBufferClass *this_class)
+{
+    GObjectClass *object_class = G_OBJECT_CLASS(this_class);
+
+    object_class->finalize = arv_buffer_finalize;
 }
